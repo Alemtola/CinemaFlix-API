@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Alemtola/CinemaFlix-API/issues"
   },
-  "homepage": "https://github.com/Alemtola/CinemaFlix-API#readme"
+  "homepage": "https://github.com/Alemtola/CinemaFlix-API#readme",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }
