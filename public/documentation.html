@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>CinemaFlix API</title>
+    <title>CinemaFlix API Documentation</title>
     <!-- Bootstrap css link -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
@@ -13,16 +13,173 @@
     <link href="css/styles.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>CinemaFlix API</h1>
+    <header></header>
+    <main>
+      <div class="container mt-10">
+        <h1 class="text-center mb-3">CinemaFlix API - Documentation</h1>
+        <h3 class="mb-3">Overview</h3>
 
-    <p>
-      This is an API for a movie database app called CinemaFlix in which users
-      can search for and save information about movies.<br />
-      The web application will provide users with access to information about
-      different movies, directors, and genres.<br />
-      Users will be able to sign up, update their personal information, and
-      create a list of their favorite movies.
-    </p>
+        <p>
+          This is an API for a movie database app called CinemaFlix in which
+          users can search for and save information about movies. The web
+          application will provide users with access to information about
+          different movies, directors, and genres. Users will be able to sign
+          up, update their personal information, and create a list of their
+          favorite movies.
+        </p>
+        <br />
+
+        <h3 class="mb-3">Request-Response Guidelines for URL Endpoints</h3>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Request</th>
+                <th scope="col">URL</th>
+                <th scope="col">HTTP Method</th>
+                <th scope="col">Request Body Data Format</th>
+                <th scope="col">Response Body Data Format</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Get a list of all movies to a user</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about all the movies</td>
+              </tr>
+
+              <tr>
+                <td>Get data about a single movie by title</td>
+                <td>/movies/[title]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>
+                  A JSON object holding data about a single movie. <br />
+                  Example:
+                  <pre>
+                    <code>
+  {
+    "Title": "The Graduate",
+    "Year": "1967",
+    "Runtime": "106 min",
+    "Genre": [
+      "Comedy",
+      "Drama",
+      "Romance"
+    ],
+    "Director":
+      "name": "Mike Nichols",
+      "birthyear": "1980"
+      "Country": "USA"
+    "Actors": [
+      "Anne Bancroft",
+      "Dustin Hoffman",
+      "Katharine Ross",
+      "William Daniels"
+    ],
+    "Language": "English",
+    "Country": "USA",
+    "imageUrl": "http://ia.media-imdb.com/images/M/MV5BM.jpg",
+  }
+                    </code>
+                  </pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Get a list of all genres</td>
+                <td>/genres</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about all the genres</td>
+              </tr>
+
+              <tr>
+                <td>Get a list of all directors</td>
+                <td>/directors</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about all the directors</td>
+              </tr>
+
+              <tr>
+                <td>Get a data about a single director</td>
+                <td>/directors</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>
+                  A JSON object holding data about a single directors.<br />
+                  Example:
+                  <pre>
+                    <code>
+  {
+    "Director":
+      "name": "Mike Nichols",
+      "birthyear": "1980"
+      "Country": "USA"
+  }
+                    </code>
+                  </pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Allow new users to register</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>
+                  A JSON object holding data about the new user to be added.<br />
+                  Example:
+                  <pre>
+                    <code>
+  {
+    "name": "Brad Tomson",
+    "birthdate": "01.10.1990",
+    "username": "bratom1",
+    "email": "tomsonb@mail.com",
+    "password": "son1990",
+  }
+                    </code>
+                  </pre>
+                </td>
+
+                <td>
+                  A JSON object holding data about the new added user, including
+                  the new ID: Example
+                  <pre>
+                    <code>
+  {
+    "name": "Brad Tomson",
+    "birthdate": "01.10.1990",
+    "username": "bratom1",
+    "email": "tomsonb@mail.com",
+    "password": "son1990",
+    "id": "txsddf0222-xr2t-0000",
+  }
+                    </code>
+                  </pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Allow users to update their user info</td>
+                <td>/users/[username]</td>
+                <td>PUT</td>
+                <td>None</td>
+                <td>
+                  A confirmation message that a new username was succesfully
+                  assigned or failed.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
 
     <!-- Bootstrap js link -->
     <script
