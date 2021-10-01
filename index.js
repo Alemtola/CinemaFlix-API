@@ -101,12 +101,17 @@ app.get("/genres", (req, res) => {
   res.send("Successful GET request returning data on all movie genres");
 });
 
+//Returns data about a single genre by name
+app.get("/genres/:name", (req, res) => {
+  res.send("Successful GET request returning data on a single genre by name");
+});
+
 //Returns a list of all movie directors
 app.get("/directors", (req, res) => {
   res.send("Successful GET request returning data on all movie directors");
 });
 
-//Returns the data of a single movie director
+//Returns the data of a single movie director by name
 app.get("/directors/:name", (req, res) => {
   res.send(
     "Successful GET request returning data on a single movie director by name"
@@ -153,6 +158,21 @@ app.put("/users/:name/:username", (req, res) => {
       .status(404)
       .send("User with the name " + req.params.name + " was not found.");
   }
+});
+
+//Allow users to add a movie to their favorite list
+app.post("/users/:name/movies/:movie_id", (req, res) => {
+  res.send("Successful POST request adding a movie to favorite list");
+});
+
+//Allow users to delete a movie from their favorite list
+app.delete("/users/:name/movies/:movie_id", (req, res) => {
+  res.send("Successful DELETE request removing a movie from favorite list");
+});
+
+//Allowing existing users to de-register
+app.delete("/users", (req, res) => {
+  res.send("Successful DELETE request deleting selected user data");
 });
 
 //exposing files in 'public' folder
