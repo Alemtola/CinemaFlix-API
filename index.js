@@ -171,7 +171,7 @@ app.delete("/users/:username/favorites/:movieId", (req, res) => {
 });
 
 //Allowing existing users to de-register
-app.delete("/users/[username]", (req, res) => {
+app.delete("/users/:username", (req, res) => {
   res.send("Successful DELETE request deleting selected user data");
 });
 
