@@ -64,12 +64,10 @@
                     <code>
   {
     "Title": "The Graduate",
+    "Description": "The Graduate is a Comedy film...",
     "Year": "1967",
-    "Runtime": "106 min",
     "Genre": [
       "Comedy",
-      "Drama",
-      "Romance"
     ],
     "Director":
       "name": "Mike Nichols",
@@ -81,8 +79,6 @@
       "Katharine Ross",
       "William Daniels"
     ],
-    "Language": "English",
-    "Country": "USA",
     "imageUrl": "http://ia.media-imdb.com/images/M/MV5BM.jpg",
   }
                     </code>
@@ -99,6 +95,29 @@
               </tr>
 
               <tr>
+                <td>Get a data about a single genre by name</td>
+                <td>/genres/[name]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>
+                  A JSON object holding data about a single genre.<br />
+                  Example:
+                  <pre>
+                    <code>
+  {
+    "Genre":
+      "name": "Action",
+      "description": "Action film is a film genre in which the protagonist
+      or protagonists are thrust into a series of events that typically
+      include violence, extended fighting, physical feats, rescues and
+      frantic chases."
+  }
+                    </code>
+                  </pre>
+                </td>
+              </tr>
+
+              <tr>
                 <td>Get a list of all directors</td>
                 <td>/directors</td>
                 <td>GET</td>
@@ -107,8 +126,8 @@
               </tr>
 
               <tr>
-                <td>Get a data about a single director</td>
-                <td>/directors</td>
+                <td>Get a data about a single director by name</td>
+                <td>/directors/[name]</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>
@@ -172,7 +191,40 @@
                 <td>None</td>
                 <td>
                   A confirmation message that a new username was succesfully
-                  assigned or failed.
+                  assigned.
+                </td>
+              </tr>
+
+              <tr>
+                <td>Allow users to add a movie to their favorite list</td>
+                <td>/users/[username]/favorites/[movieid]</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>
+                  A confirmation message that the movie is succesfully added to
+                  their favorite list.
+                </td>
+              </tr>
+
+              <tr>
+                <td>Allow users to remove a movie from their favorite list</td>
+                <td>/users/[username]/favorites/[movieid]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>
+                  A confirmation message that the movie is succesfully removed
+                  from their favorite list.
+                </td>
+              </tr>
+
+              <tr>
+                <td>Allow exsisting users to deregister</td>
+                <td>/users/[username]/deregister</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>
+                  A confirmation message that the user is succesfully
+                  deregistered.
                 </td>
               </tr>
             </tbody>
