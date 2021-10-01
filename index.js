@@ -161,17 +161,17 @@ app.put("/users/:name/:username", (req, res) => {
 });
 
 //Allow users to add a movie to their favorite list
-app.post("/users/:name/movies/:movie_id", (req, res) => {
+app.post("/users/:username/favorites/:movieId", (req, res) => {
   res.send("Successful POST request adding a movie to favorite list");
 });
 
 //Allow users to delete a movie from their favorite list
-app.delete("/users/:name/movies/:movie_id", (req, res) => {
+app.delete("/users/:username/favorites/:movieId", (req, res) => {
   res.send("Successful DELETE request removing a movie from favorite list");
 });
 
 //Allowing existing users to de-register
-app.delete("/users", (req, res) => {
+app.delete("/users/[username]", (req, res) => {
   res.send("Successful DELETE request deleting selected user data");
 });
 
