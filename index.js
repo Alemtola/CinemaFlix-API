@@ -18,8 +18,8 @@ mongoose.connect("mongodb://localhost:27017/cinemaflixdb", {
 });
 
 const app = express();
-
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Using the Morgan middleware library to log all requests
 app.use(morgan("common"));
@@ -31,16 +31,26 @@ app.get("/", (req, res) => {
 
 //Returns a data about list of all movies
 app.get("/movies", (req, res) => {
-  res.json(movies);
+  Movies.find()
+    .then(movies => {
+      res.status(201).json(movies);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Returns a data about a single movie by title
-app.get("/movies/:title", (req, res) => {
-  res.json(
-    movies.find(movie => {
-      return movie.title === req.params.title;
+app.get("/movies/:Title", (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then(movie => {
+      res.json(movie);
     })
-  );
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Returns a list of all movie genres
@@ -67,59 +77,120 @@ app.get("/directors/:name", (req, res) => {
 
 //Returns the list of all users
 app.get("/users", (req, res) => {
-  res.json(users);
+  Users.find()
+    .then(users => {
+      res.status(201).json(users);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
-//Adds a new user to the list of users
+//Allow new users to register
 app.post("/users", (req, res) => {
-  let newUser = req.body;
-
-  if (!newUser.name) {
-    const message = "Missing name in request body";
-    res.status(400).send(message);
-  } else {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).send(newUser);
-  }
+  Users.findOne({ Username: req.body.Username })
+    .then(user => {
+      if (user) {
+        return res.status(400).send(req.body.Username + "already exists");
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        })
+          .then(user => {
+            res.status(201).json(user);
+          })
+          .catch(error => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
 });
 
-//Update the user info  by name
-app.put("/users/:name/:username", (req, res) => {
-  let user = users.find(user => {
-    return user.name === req.params.name;
-  });
-
-  if (user) {
-    user.username = req.params.username;
-    res
-      .status(201)
-      .send(
-        "User " +
-          req.params.name +
-          " has changed the username into " +
-          req.params.username
-      );
-  } else {
-    res
-      .status(404)
-      .send("User with the name " + req.params.name + " was not found.");
-  }
+//Update the user info  by username
+app.put("/users/:username", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      }
+    },
+    { new: true }, //makes sure that the updated document is returned
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
 
 //Allow users to add a movie to their favorite list
-app.post("/users/:username/favorites/:movieId", (req, res) => {
-  res.send("Successful POST request adding a movie to favorite list");
+app.post("/users/:username/movies/:movieId", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $push: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true }, //making sure that the updated document is returned
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
 
-//Allow users to delete a movie from their favorite list
-app.delete("/users/:username/favorites/:movieId", (req, res) => {
-  res.send("Successful DELETE request removing a movie from favorite list");
+//Allow users to remove a movie from their favorite list
+app.delete("/users/:username/movies/:movieId", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $pull: { FavoriteMovies: req.params.MovieID }
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
 
 //Allowing existing users to de-register
 app.delete("/users/:username", (req, res) => {
-  res.send("Successful DELETE request deleting selected user data");
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then(user => {
+      if (!user) {
+        res.status(400).send(req.params.Username + " was not found");
+      } else {
+        res.status(200).send(req.params.Username + " was deleted.");
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //exposing files in 'public' folder
