@@ -1,78 +1,25 @@
-//importing the modules and assignning to a variable
+//importing the modules
 const express = require("express"),
   morgan = require("morgan"),
   bodyParser = require("body-parser"),
-  uuid = require("uuid");
+  uuid = require("uuid"),
+  mongoose = require("mongoose");
+
+//importing the models
+const Models = require("./models.js");
+const Movies = Models.Movie;
+const Users = Models.User;
+
+//connecting mongoose to the the local cinemaflixdb database
+//integrating the REST API to the database
+mongoose.connect("mongodb://localhost:27017/cinemaflixdb", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const app = express();
 
 app.use(bodyParser.json());
-
-//the movie data
-let movies = [
-  {
-    title: "Movie 1",
-    director: "Direector 1",
-    genre: "Genre 1"
-  },
-  {
-    title: "Movie 2",
-    director: "Direector 2",
-    genre: "Genre 2"
-  },
-  {
-    title: "Movie 3",
-    director: "Direector 3",
-    genre: "Genre 3"
-  },
-  {
-    title: "Movie 4",
-    director: "Direector 4",
-    genre: "Genre 4"
-  },
-  {
-    title: "Movie 5",
-    director: "Direector 5",
-    genre: "Genre 5"
-  },
-  {
-    title: "Movie 6",
-    director: "Direector 6",
-    genre: "Genre 5"
-  },
-  {
-    title: "Movie 7",
-    director: "Direector 7",
-    genre: "Genre 4"
-  },
-  {
-    title: "Movie 8",
-    director: "Direector 8",
-    genre: "Genre 3"
-  },
-  {
-    title: "Movie 9",
-    director: "Direector 9",
-    genre: "Genre 2"
-  },
-  {
-    title: "Movie 10",
-    director: "Direector 10",
-    genre: "Genre 1"
-  }
-];
-
-//the user data
-let users = [
-  {
-    id: "txsddf0222-xr2t-0000",
-    name: "Brad Tomson",
-    birthdate: "01.10.1990",
-    username: "bratom1",
-    email: "tomsonb@mail.com",
-    password: "son1990"
-  }
-];
 
 //Using the Morgan middleware library to log all requests
 app.use(morgan("common"));
