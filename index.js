@@ -9,6 +9,8 @@ const express = require("express"),
 const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
+const Genres = Models.Genre;
+const Directors = Models.Director;
 
 //connecting mongoose to the the local cinemaflixdb database
 //integrating the REST API to the database
@@ -55,24 +57,50 @@ app.get("/movies/:Title", (req, res) => {
 
 //Returns a list of all movie genres
 app.get("/genres", (req, res) => {
-  res.send("Successful GET request returning data on all movie genres");
+  Genres.find()
+    .then(genres => {
+      res.status(201).json(genres);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Returns data about a single genre by name
 app.get("/genres/:name", (req, res) => {
-  res.send("Successful GET request returning data on a single genre by name");
+  Genres.findOne({ Name: req.params.Name })
+    .then(genre => {
+      res.json(genre);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Returns a list of all movie directors
 app.get("/directors", (req, res) => {
-  res.send("Successful GET request returning data on all movie directors");
+  Directors.find()
+    .then(directors => {
+      res.status(201).json(directors);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Returns the data of a single movie director by name
 app.get("/directors/:name", (req, res) => {
-  res.send(
-    "Successful GET request returning data on a single movie director by name"
-  );
+  Directors.findOne({ Name: req.params.Name })
+    .then(director => {
+      res.json(director);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 //Returns the list of all users
