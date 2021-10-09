@@ -144,7 +144,7 @@ app.post("/users", (req, res) => {
 });
 
 //Update the user info  by username
-app.put("/users/:username", (req, res) => {
+app.put("/users/:Username", (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
@@ -168,7 +168,7 @@ app.put("/users/:username", (req, res) => {
 });
 
 //Allow users to add a movie to their favorite list
-app.post("/users/:username/movies/:movieId", (req, res) => {
+app.post("/users/:Username/movies/:movieId", (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
@@ -187,7 +187,7 @@ app.post("/users/:username/movies/:movieId", (req, res) => {
 });
 
 //Allow users to remove a movie from their favorite list
-app.delete("/users/:username/movies/:movieId", (req, res) => {
+app.delete("/users/:Username/movies/:movieId", (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
@@ -206,7 +206,7 @@ app.delete("/users/:username/movies/:movieId", (req, res) => {
 });
 
 //Allowing existing users to de-register
-app.delete("/users/:username", (req, res) => {
+app.delete("/users/:Username", (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then(user => {
       if (!user) {
