@@ -68,7 +68,7 @@ app.get("/genres", (req, res) => {
 });
 
 //Returns data about a single genre by name
-app.get("/genres/:name", (req, res) => {
+app.get("/genres/:Name", (req, res) => {
   Genres.findOne({ Name: req.params.Name })
     .then(genre => {
       res.json(genre);
@@ -92,7 +92,7 @@ app.get("/directors", (req, res) => {
 });
 
 //Returns the data of a single movie director by name
-app.get("/directors/:name", (req, res) => {
+app.get("/directors/:Name", (req, res) => {
   Directors.findOne({ Name: req.params.Name })
     .then(director => {
       res.json(director);
