@@ -168,7 +168,7 @@ app.put("/users/:Username", (req, res) => {
 });
 
 //Allow users to add a movie to their favorite list
-app.post("/users/:Username/movies/:movieId", (req, res) => {
+app.post("/users/:Username/movies/:MovieId", (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
@@ -187,7 +187,7 @@ app.post("/users/:Username/movies/:movieId", (req, res) => {
 });
 
 //Allow users to remove a movie from their favorite list
-app.delete("/users/:Username/movies/:movieId", (req, res) => {
+app.delete("/users/:Username/movies/:MovieId", (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
