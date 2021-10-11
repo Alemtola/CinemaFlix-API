@@ -1,6 +1,6 @@
 //importing the passport module and defining the strategies
 const passport = require("passport"),
-  localStrategy = require("passport-local").strategy,
+  LocalStrategy = require("passport-local").strategy,
   Models = require("./models.js"),
   passportJWT = require("passport-jwt");
 
