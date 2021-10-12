@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken"),
 require("./passport");
 
 // A function to create a JWT based on the username and password
-let generateJWTToken = user => {
+let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username, // the username encoded in the JWT
     expiresIn: "7d", // specifing the token will expire in 7 days
@@ -14,7 +14,7 @@ let generateJWTToken = user => {
 };
 
 // POST login
-module.exports = router => {
+module.exports = (router) => {
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
       if (error || !user) {

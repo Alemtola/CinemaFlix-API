@@ -20,11 +20,11 @@ mongoose.connect("mongodb://localhost:27017/cinemaflixdb", {
 });
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 //Using the Morgan middleware library to log all requests
 app.use(morgan("common"));
+//Using body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //importing the passport module
 let auth = require("./auth")(app);
