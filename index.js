@@ -132,18 +132,6 @@ app.get(
   }
 );
 
-//Returns the list of all users
-app.get("/users", (req, res) => {
-  Users.find()
-    .then(users => {
-      res.status(201).json(users);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
-
 //Allow new users to register
 app.post("/users", (req, res) => {
   Users.findOne({ Username: req.body.Username })
