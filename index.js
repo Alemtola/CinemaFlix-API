@@ -26,7 +26,11 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//importing the passport module
+//importing cors module to allow all domains
+const cors = require("cors");
+app.use(cors());
+
+//importing the passport module for authentication
 let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
