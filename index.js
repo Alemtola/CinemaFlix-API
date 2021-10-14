@@ -3,7 +3,8 @@ const express = require("express"),
   morgan = require("morgan"),
   bodyParser = require("body-parser"),
   uuid = require("uuid"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  { check, validationResult } = require('express-validator');
 
 //importing the models
 const Models = require("./models.js");
@@ -41,8 +42,7 @@ app.get("/", (req, res) => {
 });
 
 //Returns a data about list of all movies
-app.get(
-  "/movies",
+app.get("/movies",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.find()
@@ -57,8 +57,7 @@ app.get(
 );
 
 //Returns a data about a single movie by title
-app.get(
-  "/movies/:Title",
+app.get("/movies/:Title",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.findOne({ Title: req.params.Title })
@@ -73,8 +72,7 @@ app.get(
 );
 
 //Returns a list of all movie genres
-app.get(
-  "/genres",
+app.get("/genres",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Genres.find()
@@ -89,8 +87,7 @@ app.get(
 );
 
 //Returns data about a single genre by name
-app.get(
-  "/genres/:Name",
+app.get("/genres/:Name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Genres.findOne({ Name: req.params.Name })
@@ -105,8 +102,7 @@ app.get(
 );
 
 //Returns a list of all movie directors
-app.get(
-  "/directors",
+app.get("/directors",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Directors.find()
@@ -121,8 +117,7 @@ app.get(
 );
 
 //Returns the data of a single movie director by name
-app.get(
-  "/directors/:Name",
+app.get("/directors/:Name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Directors.findOne({ Name: req.params.Name })
@@ -137,7 +132,21 @@ app.get(
 );
 
 //Allow new users to register
-app.post("/users", (req, res) => {
+app.post("/users",
+  [ //validates user input data when registering
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
   //hashing the password user enters
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username }) //checks if the user already exists
@@ -168,10 +177,19 @@ app.post("/users", (req, res) => {
 });
 
 //Update the user info  by username
-app.put(
-  "/users/:Username",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
+app.put("/users/:Username", passport.authenticate("jwt", { session: false }),
+  [ //validates user input data when updating info
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ],(req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
@@ -196,8 +214,7 @@ app.put(
 );
 
 //Allow users to add a movie to their favorite list
-app.post(
-  "/users/:Username/movies/:MovieId",
+app.post("/users/:Username/movies/:MovieId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
@@ -219,8 +236,7 @@ app.post(
 );
 
 //Allow users to remove a movie from their favorite list
-app.delete(
-  "/users/:Username/movies/:MovieId",
+app.delete("/users/:Username/movies/:MovieId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
@@ -242,8 +258,7 @@ app.delete(
 );
 
 //Allowing existing users to de-register
-app.delete(
-  "/users/:Username",
+app.delete("/users/:Username",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username })
