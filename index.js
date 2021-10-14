@@ -15,7 +15,14 @@ const Directors = Models.Director;
 
 //connecting mongoose to the the local cinemaflixdb database
 //integrating the REST API to the database
+/*
 mongoose.connect("mongodb://localhost:27017/cinemaflixdb", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+*/
+
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
