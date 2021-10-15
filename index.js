@@ -221,7 +221,7 @@ app.put("/users/:Username", passport.authenticate("jwt", { session: false }),
 );
 
 //Allow users to add a movie to their favorite list
-app.post("/users/:Username/movies/:MovieId",
+app.post("/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
@@ -243,7 +243,7 @@ app.post("/users/:Username/movies/:MovieId",
 );
 
 //Allow users to remove a movie from their favorite list
-app.delete("/users/:Username/movies/:MovieId",
+app.delete("/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
